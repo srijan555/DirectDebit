@@ -1,0 +1,47 @@
+show databases;
+create database directdebit;
+use directdebit;
+show tables;
+
+CREATE TABLE ENTITY_REGISTER (
+    system_entity_code NVARCHAR(50) PRIMARY KEY,
+    group_no NVARCHAR(50),
+    group_name NVARCHAR(100),
+    group_effective_date DATE,
+    account_no NVARCHAR(50),
+    account_name NVARCHAR(100),
+    sort_code NVARCHAR(50),
+    created_by NVARCHAR(50),
+    created_on DATE
+);
+
+select * from entity_register;
+-- Drop the current primary key (if any)
+-- ALTER TABLE ENTITY_REGISTER DROP PRIMARY KEY;
+
+-- Modify the column to AUTO_INCREMENT
+-- ALTER TABLE ENTITY_REGISTER MODIFY system_entity_code INT AUTO_INCREMENT PRIMARY KEY;
+
+INSERT INTO ENTITY_REGISTER (
+    group_no,
+    group_name,
+    account_no,
+    account_name,
+    sort_code,
+    created_by,
+    created_on,
+    group_effective_date
+)
+VALUES (
+    '999997',
+    'AstraNova Industries',
+    '87654319',
+    'AstraNova Industries Pvt. Ltd.',
+    '631985',
+    'ADMIN',
+    '2025-01-04',
+    '2025-01-01'
+);
+
+
+
