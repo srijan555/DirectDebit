@@ -77,16 +77,20 @@ public class OMIServiceAUDDIS {
         }
         //Testing working day logic
         List<LocalDate> ukHolidayList = new ArrayList<>();
-        LocalDate localDate = addWorkingDays(LocalDate.now(), 5, ukHolidayList);
+        LocalDate localDate = addWorkingDays(LocalDate.now(), 5, ukHolidayList, "desc");
         return null;
     }
 
-    public LocalDate addWorkingDays(LocalDate startDate, int workingDaysToAdd, List<LocalDate> ukHolidayList) {
+    public LocalDate addWorkingDays(LocalDate startDate, int workingDaysToAdd, List<LocalDate> ukHolidayList, String order) {
         LocalDate currentDate = startDate;
         int addedWorkingDays = 0;
         // Loop until we have added the required working days
         while (addedWorkingDays < workingDaysToAdd) {
-            currentDate = currentDate.plusDays(1); // Move to next day
+            if(order.equalsIgnoreCase("asc")){
+                currentDate = currentDate.plusDays(1); // Move to next day
+            } else if (order.equalsIgnoreCase("desc")) {
+                currentDate = currentDate.plusDays(-1); // Move to prev day
+            }
             // Check if it's a working day (Mon-Fri) and not a UK public holiday
             if (isWorkingDay(currentDate, ukHolidayList)) {
                 addedWorkingDays++;
@@ -238,7 +242,7 @@ public class OMIServiceAUDDIS {
             //paymnet method amend date
             omi.setDdiStatusPrevDate(Date.valueOf(LocalDate.now()));
             omi.setDdiStatusUpdateDate(Date.valueOf(LocalDate.now().plusDays(5)));//later to be changed with working day logic
-            //omi.setDdiStatusUpdateDate(Date.valueOf(addWorkingDays(LocalDate.now(), activeMandateDays, ukHolidayList)));
+            //omi.setDdiStatusUpdateDate(Date.valueOf(addWorkingDays(LocalDate.now(), activeMandateDays, ukHolidayList,"asc")));
             omi.setFileYn("N");
             omi.setGroupEffectiveDate(entityRegisterBeforeBusinessDate.get(i).getGroupEffectiveDate());
             omi.setGroupName(entityRegisterBeforeBusinessDate.get(i).getGroupName());
