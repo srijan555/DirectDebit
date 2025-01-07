@@ -95,5 +95,16 @@ public class CalendarHoliday {
                 ", createdOn=" + createdOn +
                 '}';
     }
+
+//    INSERT INTO CALENDAR_HOLIDAY (year, holiday_date, holiday_name, created_by, created_on)
+//    VALUES
+//            (2025, '2025-01-01', 'New Year\'s Day', 'admin', CURRENT_TIMESTAMP),
+//            (2025, '2025-04-18', 'Good Friday', 'admin', CURRENT_TIMESTAMP),
+//            (2025, '2025-04-21', 'Easter Monday', 'admin', CURRENT_TIMESTAMP),
+//            (2025, '2025-05-05', 'Early May Bank Holiday', 'admin', CURRENT_TIMESTAMP),
+//            (2025, '2025-05-26', 'Spring Bank Holiday', 'admin', CURRENT_TIMESTAMP),
+//            (2025, '2025-08-25', 'Summer Bank Holiday', 'admin', CURRENT_TIMESTAMP),
+//            (2025, '2025-12-25', 'Christmas Day', 'admin', CURRENT_TIMESTAMP),
+//            (2025, '2025-12-26', 'Boxing Day', 'admin', CURRENT_TIMESTAMP);
 }
 

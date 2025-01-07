@@ -236,7 +236,7 @@ public class OMIServiceAUDDIS {
             omi.setAmount(0.00);
             omi.setCreatedBy(entityRegisterBeforeBusinessDate.get(i).getCreatedBy());//later user id will be taken from SecurityContextHolder
             omi.setCreatedOn(Date.valueOf(LocalDate.now()));
-            omi.setDdiStatus("INACTIVE");
+            omi.setDdiStatus("Inactive");
             //ddi status addacs date
             //bank amend date
             //paymnet method amend date
