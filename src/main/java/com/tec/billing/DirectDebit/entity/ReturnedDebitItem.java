@@ -49,7 +49,7 @@ public class ReturnedDebitItem {
     private String reasonForReturn;
 
     @Column(name = "processingDate")
-    private LocalDateTime processingDate;
+    private String processingDate;
 
     @Column(name = "notifiedYn")
     private String notifiedYn;
@@ -148,11 +148,11 @@ public class ReturnedDebitItem {
         this.reasonForReturn = reasonForReturn;
     }
 
-    public LocalDateTime getProcessingDate() {
+    public String getProcessingDate() {
         return processingDate;
     }
 
-    public void setProcessingDate(LocalDateTime processingDate) {
+    public void setProcessingDate(String processingDate) {
         this.processingDate = processingDate;
     }
 

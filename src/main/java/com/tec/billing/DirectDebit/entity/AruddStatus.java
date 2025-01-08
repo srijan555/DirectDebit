@@ -42,12 +42,12 @@ public class AruddStatus {
         this.statusDescription = statusDescription;
     }
 
-    @Override
-    public String toString() {
-        return "AruddStatus{" +
-                "statusCode=" + statusCode +
-                ", statusDescription='" + statusDescription + '\'' +
-                '}';
+    public String getDdiStatus() {
+        return ddiStatus;
+    }
+
+    public void setDdiStatus(String ddiStatus) {
+        this.ddiStatus = ddiStatus;
     }
 
     /*INSERT INTO ARUDD_STATUS (statusCode, statusDescription, ddiStatus) VALUES
