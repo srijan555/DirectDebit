@@ -41,7 +41,7 @@ public class EntityRegister {
     @Column(name = "is_mandate_created_yn", length = 1)
     private String isMandateCreatedYN;
 
-    @Column(name = "created_by", length = 50)
+    @Column(name = "created_by")
     private String createdBy;
 
     @Column(name = "created_on")

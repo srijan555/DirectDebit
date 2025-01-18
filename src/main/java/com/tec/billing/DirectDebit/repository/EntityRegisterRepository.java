@@ -13,4 +13,6 @@ public interface EntityRegisterRepository extends JpaRepository<EntityRegister,L
 
     @Query("SELECT er FROM EntityRegister er WHERE er.createdOn <= :currentDate and er.isMandateCreatedYN is NULL")
     List<EntityRegister> findEntityRegisterBeforeBusinessDate(LocalDateTime currentDate);
+
+    EntityRegister findByGroupNo(String groupNo);
 }
