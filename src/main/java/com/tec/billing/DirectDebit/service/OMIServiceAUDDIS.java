@@ -5,6 +5,10 @@ import com.tec.billing.DirectDebit.entity.OutboundMandateInformation;
 import com.tec.billing.DirectDebit.entity.OutputFormsSchedule;
 import com.tec.billing.DirectDebit.entity.Transaction;
 import com.tec.billing.DirectDebit.repository.*;
+import com.tec.billing.DirectDebit.utils.EmailSender;
+import com.tec.billing.DirectDebit.utils.SendEmailForAuddis;
+import com.tec.billing.DirectDebit.utils.TemplatePdfGenerator;
+import org.hibernate.sql.Template;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -39,6 +43,15 @@ public class OMIServiceAUDDIS {
     @Autowired
     OutputFormsScheduleRepository ofsRepository;
 
+    @Autowired
+    SendEmailForAuddis sendEmailForAuddis;
+
+    @Autowired
+    EmailSender emailSender;
+
+    @Autowired
+    TemplatePdfGenerator templatePdfGenerator;
+
     /*@Autowired
     private static CalenderHolidayRepository calenderHolidayRepository;*/
 
@@ -47,6 +60,9 @@ public class OMIServiceAUDDIS {
 
     @Value("${directdebit.AUDDIS.XML}")
     private String xmlFilePath;
+
+    @Value("${directdebit.AUDDIS.PDF}")
+    private String pdfFilePath;
 
 /*    @Value("${directdebit.parameter.workingDaysToAdd}")
     private int activeMandateDays;
@@ -77,7 +93,7 @@ public class OMIServiceAUDDIS {
         }
         //Testing working day logic
         List<LocalDate> ukHolidayList = new ArrayList<>();
-        LocalDate localDate = addWorkingDays(LocalDate.now(), 5, ukHolidayList, "desc");
+        LocalDate localDate = addWorkingDays(LocalDate.now(), 5, ukHolidayList, "asc");
         return null;
     }
 
@@ -111,6 +127,7 @@ public class OMIServiceAUDDIS {
         List<OutputFormsSchedule> ofsList = new ArrayList<>();
         for(OutboundMandateInformation omi : omiListForFlatFile){
             String auddisXML = generateXml(omi);
+            generatePdfAndSendEmail(auddisXML);
             String dateFormatted = new SimpleDateFormat("dd_MM_YYYY").format(new java.util.Date());
             String updatedXmlFilePath = xmlFilePath + "/AUDDIS_" + omi.getGroupNo() +"_" + dateFormatted + ".xml";
             saveXmlToFile(omi, updatedXmlFilePath, auddisXML);
@@ -126,6 +143,18 @@ public class OMIServiceAUDDIS {
             ofsList.add(ofs);
         }
         return ofsList;
+    }
+
+    private void generatePdfAndSendEmail(String auddisXML) throws JAXBException, IOException {
+        OutboundMandateInformation outboundMandateInformation = sendEmailForAuddis.parseXml(auddisXML);
+        String sharedPath = pdfFilePath+"/Auddis_Pdf_"+outboundMandateInformation.getGroupNo()+".pdf";
+        String templatePath = "D:/Learning/Spring Boot/DirectDebit/Outbound/AUDDIS/PDF/template/template.pdf";
+        templatePdfGenerator.createTemplatePdf(templatePath);
+        sendEmailForAuddis.generatePdf(outboundMandateInformation,templatePath,sharedPath);
+        //createTemplatePdf(templatePath);
+        emailSender.sendEmail("ultimategamecentric@gmail.com",
+                "AUDDIS file created for group no: "+outboundMandateInformation.getGroupNo(),
+                "AUDDIS file generated in your path and PFA the mandate details",sharedPath);
     }
 
     public static void saveXmlToFile(OutboundMandateInformation omi, String xmlFilePath, String auddisXML) throws JAXBException, IOException {
@@ -267,9 +296,14 @@ public class OMIServiceAUDDIS {
     //model map ER to OMI, update er.IsMandateCreatedYN=Y -DONE
     //persist OMI -DONE
     //load OMI where ddiStatus=INACTIVE and fileYN!=Y -DONE
-    //generate flat file -DONE
-    //place in sftp location -DONE
-    //generate transaction -DONE
-    //generate xml -DONE
     //implement working day logic with calander holiday -DONE
+    //generate csv flat file -DONE
+    //place in sftp location -DONE
+    //generate transaction log -DONE
+    //generate xml -DONE
+    //place xml in sftp location -DONE
+    //DAAS will provide email template
+    //fill xml values to PDF template
+    //place pdf in sftp location
+    //send email with pdf attachment
 }
